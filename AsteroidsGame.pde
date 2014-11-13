@@ -36,6 +36,7 @@ public void draw()
       zoom.setX((int)(Math.random()*501));
       zoom.setY((int)(Math.random()*501));
       zoom.setPointDirection((int)(Math.random()*361));
+      spacePressed = false;
     }
 }
 public void keyPressed()
