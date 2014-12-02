@@ -1,41 +1,66 @@
 SpaceShip zoom;
 Star [] dots;
-Asteroid [] rock;
+ArrayList <Asteroid> asteroids;
+
+
 boolean aPressed = false;
 boolean dPressed = false;
 boolean wPressed = false;
 boolean sPressed = false;
 boolean spacePressed = false;
+
+
+double distance;
+
+
+boolean gameOver = false;
+
+
 public void setup() 
 {
   size(500,500);
   background(0);
+  
   zoom = new SpaceShip();
-  rock = new Asteroid[10];
+  
+  asteroids = new ArrayList <Asteroid>();
+  for(int a = 0; a < 10; a++)
+  {
+    asteroids.add(new Asteroid());
+  }
+  
   dots = new Star[100];
   for(int i = 0; i < dots.length; i++)
   {
     dots[i] = new Star();
   }
-  for(int a = 0; a < rock.length; a++)
-  {
-    rock[a] = new Asteroid();
-  }
 }
+
+
 public void draw() 
 {
   background(0);
+
   for(int i = 0; i < dots.length; i++)
   {
     dots[i].show();
   }
-  for(int a = 0; a < rock.length; a++)
+
+  for(int a = 0; a < asteroids.size(); a++)
   {
-    rock[a].move();
-    rock[a].show();
+    asteroids.get(a).move();
+    asteroids.get(a).show();
+    distance = dist(asteroids.get(a).getX(), asteroids.get(a).getY(), zoom.getX(), zoom.getY());
+    if(distance < 26)
+    {
+      asteroids.remove(a);
+      gameOver = true;
+    }
   }  
+
   zoom.move();
   zoom.show();
+
   if(aPressed == true) {zoom.rotate(-5);}
   if(dPressed == true) {zoom.rotate(5);}
   if(wPressed == true) {zoom.accelerate(0.1);}
@@ -49,7 +74,24 @@ public void draw()
       zoom.setPointDirection((int)(Math.random()*361));
       spacePressed = false;
     }
+
+  if(gameOver == true)
+  {
+    for(int i = 0; i < asteroids.size(); i++)
+    {
+      asteroids.get(i).setDirectionX(0);
+      asteroids.get(i).setDirectionY(0);
+      zoom.setDirectionX(0);
+      zoom.setDirectionY(0);
+      fill(0, 126, 126);
+      textSize(30);
+      textAlign(CENTER);
+      text("Game Over", 250, 250);
+    }
+  }
 }
+
+
 public void keyPressed()
 {
   if(key == 'a') {aPressed = true;}
@@ -58,6 +100,8 @@ public void keyPressed()
   if(key == 's') {sPressed = true;}
   if(key == ' ') {spacePressed = true;}
 }
+
+
 public void keyReleased()
 {
   if(key == 'a') {aPressed = false;}
@@ -66,6 +110,8 @@ public void keyReleased()
   if(key == 's') {sPressed = false;}
   if(key == ' ') {spacePressed = false;}
 }
+
+
 class SpaceShip extends Floater  
 {
   SpaceShip()
@@ -132,7 +178,34 @@ class Asteroid extends Floater
     myDirectionX = (int)(Math.random()*4-2);
     myDirectionY = (int)(Math.random()*4-2);
     myPointDirection = (int)(Math.random()*361);
-    rotSpeed = (int)(Math.random()*10-5);
+
+    // if(Math.random()>.5)
+    // {
+    //   myDirectionX = (int)(Math.random()*1+1);
+    // }
+    // else
+    // {
+    //   myDirectionX = (int)(Math.random()*1-2);
+    // }
+
+    // if(Math.random()>.5)
+    // {
+    //   myDirectionY = (int)(Math.random()*1+1);
+    // }
+    // else
+    // {
+    //   myDirectionY = (int)(Math.random()*1-2);
+    // }
+
+    if(Math.random()<.5)
+    {
+      rotSpeed = (int)(Math.random()*2-3);
+    }
+    else
+    {
+      rotSpeed = (int)(Math.random()*2+1);
+    }
+
   }
   public void setX(int x) {myCenterX = x;}
   public int getX() {return (int)myCenterX;}
@@ -228,6 +301,10 @@ abstract class Floater
     endShape(CLOSE);  
   }   
 }
+
+
+
+
 
 
 
