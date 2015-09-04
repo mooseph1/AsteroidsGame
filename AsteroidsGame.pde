@@ -93,11 +93,18 @@ public void draw()
           asteroids.remove(j);
           bob.remove(i);
           asteroids.add(new Asteroid());
-          score = score + 1;
+          if(gameOver == false)
+          {
+            score = score + 1;
+          }
         }
     }
   }
-
+  
+  fill(0, 255, 255);
+  textSize(15);
+  textAlign(RIGHT);
+  text("Score: " + score, 493, 15);
 
   if(gameOver == true)
   {
@@ -108,10 +115,11 @@ public void draw()
       zoom.setDirectionX(0);
       zoom.setDirectionY(0);
       fill(0, 126, 126);
-      textSize(30);
+      textSize(20);
       textAlign(CENTER);
-      text("Game Over", 250, 240);
-      text("You scored " + score + " points", 250, 275);
+      text("Game Over!", 250, 235);
+      text("You scored " + score + " points", 250, 260);
+      text("Press 'r' for a new game", 250, 285);
     }
   }
 }
